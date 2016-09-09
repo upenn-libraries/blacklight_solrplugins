@@ -48,8 +48,14 @@ class CatalogController < ApplicationController
   # ...
 
   configure_blacklight do |config|
-    # flag xfacet fields
-    config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z', xfacet: true
+
+    # typically, you'll want both a facet field that behaves normally,
+    # and an xfacet field for browsing.
+
+    # regular facet
+    config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
+    # xfacet. "show: false" suppresses it from sidebar.
+    config.add_facet_field 'subject_topic_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true
   end
 ```
 

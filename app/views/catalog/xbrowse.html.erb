@@ -9,4 +9,7 @@
     <p>Browsing subject headings over a set of: TODO</p>
     <p>Limited to: TODO</p>
 
+  <% @display_facet.items.each do |facet_item| %>
+  <p></p><%= facet_item.value %></p>
+  <% end %>
 </div>

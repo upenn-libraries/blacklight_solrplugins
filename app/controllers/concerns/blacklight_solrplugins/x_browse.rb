@@ -3,16 +3,24 @@ module BlacklightSolrplugins::XBrowse
   extend ActiveSupport::Concern
 
   def xbrowse
-    facet_field = params[:id]
-    # TODO: fill this out
-    #@response = get_browse_facet_field_response(facet_field)
-  end
-
-  # @return [Blacklight::Solr::Response] the solr response
-  def get_browse_facet_field_response(facet_field, user_params = params || {}, extra_controller_params = {})
-    # TODO: fill this out
-    query = search_builder.with(user_params).facet(facet_field)
-    repository.search(query.merge(extra_controller_params))
+    target = params[:target]
+    @facet = blacklight_config.facet_fields[params[:id]]
+    # TODO: fill out
+    facet_browse_solr_params = {
+        "f.#{@facet.field}.facet.target": target,
+        "f.#{@facet.field}.facet.offset": 0,
+        "f.#{@facet.field}.facet.limit": 10
+    }
+    @response = get_facet_field_response(@facet.key, params, facet_browse_solr_params)
+    @display_facet = @response.aggregations[@facet.key]
+    @pagination = facet_paginator(@facet, @display_facet)
+    respond_to do |format|
+      # Draw the facet selector for users who have javascript disabled:
+      format.html
+      format.json
+      # Draw the partial for the "more" facet modal window:
+      format.js { render :layout => false }
+    end
   end
 
 end
