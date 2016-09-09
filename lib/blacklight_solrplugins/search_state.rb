@@ -8,15 +8,14 @@ class BlacklightSolrplugins::SearchState < Blacklight::SearchState
   # fields (which would require more invasive customization of BL)?
   def facet_value_for_facet_item item
     if !(item.is_a?(String) ||item.is_a?(Numeric))
-      if item.payload
+      if item.try(:payload)
         _self = item.payload[:self]
         if _self
           return _self[:filing] + (_self[:prefix] ? DELIMITER + _self[:prefix] : "")
         end
-      else
-        super(item)
       end
     end
+    super(item)
   end
 
 end
