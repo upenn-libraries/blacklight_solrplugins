@@ -48,6 +48,9 @@ class CatalogController < ApplicationController
   # ...
 
   configure_blacklight do |config|
+  
+    # override Response class so xfacet payloads get interpreted correctly
+    config.response_model = BlacklightSolrplugins::Response
 
     # typically, you'll want both a facet field that behaves normally,
     # and an xfacet field for browsing.

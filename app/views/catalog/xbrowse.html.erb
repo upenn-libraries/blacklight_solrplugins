@@ -1,15 +1,24 @@
 
 <div id="sidebar" class="<%= sidebar_classes %>">
-    <%#= render 'search_sidebar' %>
+    <%# TODO: how to get sidebar facets to link to the xbrowse action rather than catalog search? %>
+    <%= render 'search_sidebar' %>
 </div>
 
 <div id="content" class="<%= main_content_classes %>">
     <p>Subject index</p>
-    <p>Starting point: <%= params[:q] %></p>
-    <p>Browsing subject headings over a set of: TODO</p>
+    <p>Starting point: "<%= params[:target] %>"</p>
+    <p>Browsing headings over a set of: <%= number_with_delimiter(@response.total_count) %> </p>
     <p>Limited to: TODO</p>
 
   <% @display_facet.items.each do |facet_item| %>
-  <p></p><%= facet_item.value %></p>
+      <p><%= facet_item.value %> <%= facet_item.hits %></p>
+      <% facet_item.refs.each do |ref| %>
+          <% facet_item.ref_names_and_counts(ref).each do |ref_value, count| %>
+          <p style="margin-left: 4em;">
+          <%= ref.humanize.capitalize %>: <%= ref_value %> (<%= count %> record<%= count > 0 ? "s" : "" %>)
+          </p>
+          <% end %>
+      <% end %>
+      </dl>
   <% end %>
 </div>
