@@ -10,14 +10,25 @@
     <p>Browsing headings over a set of: <%= number_with_delimiter(@response.total_count) %> </p>
     <p>Limited to: TODO</p>
 
+  <ul class="list-unstyled">
   <% @display_facet.items.each do |facet_item| %>
-      <p><%= facet_item.value %> <%= facet_item.hits %></p>
+      <li>
+        <%= link_to facet_item.value, xbrowse_filter_on_facet_path(facet_item.value) %>
+        (<%= xfacet_record_count(facet_item.hits) %>)
+
+      <% if facet_item.refs.count > 0 %>
+      <ul class="list-unstyled">
       <% facet_item.refs.each do |ref| %>
           <% facet_item.ref_names_and_counts(ref).each do |ref_value, count| %>
-          <p style="margin-left: 4em;">
-          <%= ref.humanize.capitalize %>: <%= ref_value %> (<%= count %> record<%= count > 0 ? "s" : "" %>)
-          </p>
+          <li style="margin-left: 4em;">
+          <%= ref.humanize.capitalize %>: <%= link_to ref_value, xbrowse_filter_on_facet_path(ref_value) %> (<%= xfacet_record_count(count) %>)
+          </li>
           <% end %>
       <% end %>
+      </ul>
+      <% end %>
+
+      </li>
   <% end %>
+  </ul>
 </div>

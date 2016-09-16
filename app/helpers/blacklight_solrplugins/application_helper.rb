@@ -20,5 +20,14 @@ module BlacklightSolrplugins
       end
     end
 
+    def xfacet_record_count(count)
+      "#{count} record#{count > 1 ? 's' : ''}"
+    end
+
+    def xbrowse_filter_on_facet_path(facet_value)
+      # TODO: generate a correct URL that filters on this facet value
+      xbrowse_catalog_path(:target => params[:target])
+    end
+
   end
 end
