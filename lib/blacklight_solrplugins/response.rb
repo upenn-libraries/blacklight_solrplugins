@@ -19,7 +19,6 @@ module BlacklightSolrplugins
         next if !values.member?('terms')
 
         BlacklightSolrplugins::Util.named_list_as_hash(values['terms']).each do |display_value, payload|
-          puts "paylaod=#{payload}"
 
           i = BlacklightSolrplugins::FacetItem.new(value: display_value, hits: payload['count'], payload: payload)
 
