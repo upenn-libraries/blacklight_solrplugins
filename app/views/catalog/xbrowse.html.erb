@@ -1,19 +1,26 @@
 
 <div id="sidebar" class="<%= sidebar_classes %>">
-    <%# TODO: how to get sidebar facets to link to the xbrowse action rather than catalog search? %>
     <%= render 'search_sidebar' %>
 </div>
 
 <div id="content" class="<%= main_content_classes %>">
-    <p>Subject index</p>
-    <p>Starting point: "<%= params[:target] %>"</p>
-    <p>Browsing headings over a set of: <%= number_with_delimiter(@response.total_count) %> </p>
-    <p>Limited to: TODO</p>
+  <h2><%= @facet.label %> index</h2>
+  <p>Starting point: "<%= params[:target] %>"</p>
+  <p>Browsing headings over a set of <strong><%= number_with_delimiter(@response.total_count) %></strong> records</p>
+
+  <%= render 'constraints' %>
+
+  <div id="sortAndPerPage" class="clearfix">
+    <%= render :partial => "xbrowse_paginate", :object => @display_facet %>
+    <div class="pull-right">
+      <%= render :partial => "xbrowse_per_page" %>
+    </div>
+  </div>
 
   <ul class="list-unstyled">
   <% @display_facet.items.each do |facet_item| %>
       <li>
-        <%= link_to facet_item.value, xbrowse_filter_on_facet_path(facet_item.value) %>
+        <%= link_to(facet_item.value, path_for_xfacet(@facet, facet_item.value), :class=>"facet_select") %>
         (<%= xfacet_record_count(facet_item.hits) %>)
 
       <% if facet_item.refs.count > 0 %>
@@ -21,7 +28,7 @@
       <% facet_item.refs.each do |ref| %>
           <% facet_item.ref_names_and_counts(ref).each do |ref_value, count| %>
           <li style="margin-left: 4em;">
-          <%= ref.humanize.capitalize %>: <%= link_to ref_value, xbrowse_filter_on_facet_path(ref_value) %> (<%= xfacet_record_count(count) %>)
+          <%= ref.humanize.capitalize %>: <%= link_to ref_value, path_for_xfacet(ref_value) %> (<%= xfacet_record_count(count) %>)
           </li>
           <% end %>
       <% end %>
