@@ -40,9 +40,8 @@ module BlacklightSolrplugins::XBrowse
           "f.#{@facet.field}.facet.sort": 'index',
           "f.#{@facet.field}.facet.offset": offset,
           "f.#{@facet.field}.facet.limit": per_page }
-      if dir
-        # TODO: this is throwing things off
-        #additional_params["f.#{@facet.field}.facet.target.strict"] = true
+      if ref
+        additional_params["f.#{@facet.field}.facet.target.strict"] = true
       end
       search_builder.merge(additional_params)
     end

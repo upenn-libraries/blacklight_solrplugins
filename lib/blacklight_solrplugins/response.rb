@@ -4,8 +4,9 @@ module BlacklightSolrplugins
   # Response subclass for handling custom facet payloads.
   class Response < Blacklight::Solr::Response
 
-    # Override #facet_field_aggregations to populate the FacetField
-    # and FacetItem objects with additional data from the xfacet payload
+    # Override Blacklight::Solr::Response::Facets#facet_field_aggregations
+    # to populate the FacetField and FacetItem objects with
+    # additional data from the xfacet payload
     def facet_field_aggregations
       results = super
 

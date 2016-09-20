@@ -1,6 +1,7 @@
 module BlacklightSolrplugins
   module ApplicationHelper
 
+    # OBSOLETE: xfacets shouldn't be used for display.
     # override from Blacklight::FacetsHelperBehavior.
     # item can be a string or a FacetItem, as this used for both rendering
     # the value from a URL facet param AND the facets sidebar.
@@ -25,11 +26,16 @@ module BlacklightSolrplugins
       "#{count} record#{count > 1 ? 's' : ''}"
     end
 
-    # returns a URL that filters on this facet value
-    def path_for_xfacet(xfacet_field, facet_value)
+    # returns a search URL (NOT an xbrowse URL)that filters on this facet value.
+    # we need this because we can't use #path_for_facet since that
+    # calls our overridden #search_action_path
+    # TODO: it'd be better to save the old #search_action_path somehow and call that
+    # but I couldn't figure out how to do that.
+    def search_path_for_xfacet(xfacet_field, facet_value)
       # NOTE that we use the facet_for_filtering field, NOT the xfacet field,
-      # when adding a new query constraint
-      path_for_facet(xfacet_field['facet_for_filtering'], facet_value)
+      # when adding a query constraint to search URL
+      args = search_state.add_facet_params_and_redirect(xfacet_field['facet_for_filtering'], facet_value)
+      search_action_url(args)
     end
 
     def xbrowse_show_previous_link?(facet)

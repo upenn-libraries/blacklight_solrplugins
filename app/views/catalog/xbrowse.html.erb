@@ -17,18 +17,20 @@
     </div>
   </div>
 
-  <ul class="list-unstyled">
+  <ul class="facet-values list-unstyled">
   <% @display_facet.items.each do |facet_item| %>
       <li>
-        <%= link_to(facet_item.value, path_for_xfacet(@facet, facet_item.value), :class=>"facet_select") %>
+        <span class="facet-label">
+        <%= link_to(facet_item.value, search_path_for_xfacet(@facet, facet_item.value), :class=>"facet_select") %>
         (<%= xfacet_record_count(facet_item.hits) %>)
+        </span>
 
       <% if facet_item.refs.count > 0 %>
       <ul class="list-unstyled">
       <% facet_item.refs.each do |ref| %>
           <% facet_item.ref_names_and_counts(ref).each do |ref_value, count| %>
           <li style="margin-left: 4em;">
-          <%= ref.humanize.capitalize %>: <%= link_to ref_value, path_for_xfacet(ref_value) %> (<%= xfacet_record_count(count) %>)
+          <%= ref.humanize.capitalize %>: <%= link_to ref_value, search_path_for_xfacet(ref_value) %> (<%= xfacet_record_count(count) %>)
           </li>
           <% end %>
       <% end %>
