@@ -1,18 +1,20 @@
 
 require "blacklight"
 
-require "blacklight_solrplugins/engine"
-require "blacklight_solrplugins/facet_field"
-require "blacklight_solrplugins/facet_item"
-require "blacklight_solrplugins/indexer"
-require "blacklight_solrplugins/response"
-require "blacklight_solrplugins/routes/x_browsable"
+# MUST eager load engine or Rails won't initialize it properly
+require 'blacklight_solrplugins/engine'
+
 require "blacklight_solrplugins/util"
 
 module BlacklightSolrplugins
-  # SearchState MUST be autoloaded; if you eager load it, you'll get
-  # an error about Blacklight::Facet not found b/c it's a controller
-  # concern that's not loaded by Rails yet, but SearchState uses it.
-  # This is fixed in commit c38073a in the Blacklight repo.
+  # It's important to autoload everything that uses Blacklight modules/classes,
+  # b/c Blacklight also autoloads. This means that if we don't do this,
+  # we get errors about undefined Blacklight modules and classes.
+  autoload :Indexer, 'blacklight_solrplugins/indexer'
+  autoload :FacetField, 'blacklight_solrplugins/facet_field'
+  autoload :FacetFieldWindow, 'blacklight_solrplugins/facet_field'
+  autoload :FacetItem, 'blacklight_solrplugins/facet_item'
+  autoload :Response, 'blacklight_solrplugins/response'
+  autoload :Routes, 'blacklight_solrplugins/routes'
   autoload :SearchState, 'blacklight_solrplugins/search_state'
 end
