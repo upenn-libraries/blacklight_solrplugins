@@ -84,3 +84,21 @@ class MarcIndexer < Blacklight::Marc::Indexer
 
 end
 ```
+
+## Running the test suite
+
+Following other Blacklight gems, we use
+[engine_cart](https://github.com/cbeer/engine_cart) to create a test
+application for our engine.
+
+You can run the test suite following the usual convention of running
+rake without any arguments.
+
+```
+bundle exec rake
+```
+
+The first time you run it, engine_cart will do a bunch of work to
+setup the test app, before running the tests. Subsequent runs should
+be faster because this has already been done, so only the tests
+themselves will run.

@@ -6,6 +6,7 @@ end
 
 require 'rdoc/task'
 require 'rspec/core/rake_task'
+require 'engine_cart/rake_task'
 
 RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
@@ -19,7 +20,9 @@ Bundler::GemHelper.install_tasks
 
 RSpec::Core::RakeTask.new(:spec)
 
-task :test do
+require 'engine_cart/rake_task'
+
+task :test => ['engine_cart:generate'] do
   Rake::Task['spec'].invoke
 end
 
