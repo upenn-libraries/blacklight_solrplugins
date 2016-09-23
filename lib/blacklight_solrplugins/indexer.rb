@@ -6,6 +6,8 @@ module BlacklightSolrplugins::Indexer
 
   # namespace for our 'private' methods
   module Validators
+
+    # @param [Hash] h
     def self.validate_hash(h)
       if h.is_a?(Hash)
         h.keys.each do |key|
@@ -23,7 +25,9 @@ module BlacklightSolrplugins::Indexer
     end
   end
 
-  # returns stringified JSON object for xfacet field to parse
+  # returns stringified JSON object to use as a value for xfacet fields
+  # @param [String|Hash] raw raw string value for this facet
+  # @param [Hash] refs references data structure
   def references(raw, refs: nil)
     if !Validators.validate_multipart_string(raw)
       raise "'raw' is not a string or hash representing multipart string: #{raw}"
