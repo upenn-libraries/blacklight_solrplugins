@@ -20,6 +20,12 @@ module BlacklightSolrplugins
     def target_offset
       @options[:target_offset]
     end
+
+    # @return [FacetFieldWindow] window object for this facet
+    def window(size, expected_pos_in_results)
+      FacetFieldWindow.new(self, size, expected_pos_in_results)
+    end
+
   end
 
 end

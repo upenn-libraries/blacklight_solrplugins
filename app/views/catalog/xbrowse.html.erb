@@ -11,14 +11,14 @@
   <%= render 'constraints' %>
 
   <div id="sortAndPerPage" class="clearfix">
-    <%= render :partial => "xbrowse_paginate", :object => @display_facet %>
+    <%= render :partial => "xbrowse_paginate", :object => @display_facet_window %>
     <div class="pull-right">
       <%= render :partial => "xbrowse_per_page" %>
     </div>
   </div>
 
   <ul class="facet-values list-unstyled">
-  <% @display_facet.items.each do |facet_item| %>
+  <% @display_facet_window.items.each do |facet_item| %>
       <li>
         <span class="facet-label">
         <%= link_to(facet_item.value, search_path_for_xfacet(@facet, facet_item.value), :class=>"facet_select") %>

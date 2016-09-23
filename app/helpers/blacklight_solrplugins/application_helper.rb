@@ -38,25 +38,15 @@ module BlacklightSolrplugins
       search_action_url(args)
     end
 
-    def xbrowse_show_previous_link?(facet)
-      # TODO
-      true
-    end
-
-    def xbrowse_show_next_link?(facet)
-      # TODO
-      true
-    end
-
-    def xbrowse_previous_link(facet)
-      first = facet.items.first
+    def xbrowse_previous_link(facetwindow)
+      first = facetwindow.items.first
       if first
         url_for(search_state.params_for_search(ref: first.value, dir: "back"))
       end
     end
 
-    def xbrowse_next_link(facet)
-      last = facet.items.last
+    def xbrowse_next_link(facetwindow)
+      last = facetwindow.items.last
       if last
         url_for(search_state.params_for_search(ref: last.value, dir: "forward"))
       end
