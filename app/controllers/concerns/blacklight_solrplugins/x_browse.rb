@@ -55,7 +55,7 @@ module BlacklightSolrplugins::XBrowse
       search_builder.merge(additional_params)
     end
 
-    display_facet = response.aggregations[@facet.key]
+    display_facet = response.aggregations[facet.key]
     display_facet_window = display_facet.window(per_page, expected_pos_in_results)
 
     return [response, document_list, display_facet, display_facet_window]
