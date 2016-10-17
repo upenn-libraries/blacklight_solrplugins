@@ -55,12 +55,25 @@ class CatalogController < ApplicationController
     # typically, you'll want both a facet field that behaves normally,
     # and an xfacet field for browsing.
 
-    # regular facet
+    # this is a regular facet
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
-    # xfacet. "show: false" suppresses it from sidebar. facet_for_filtering
+    # this is an xfacet. "show: false" suppresses it from sidebar. facet_for_filtering
     # is used to construct search URLs that filter on a corresponding regular facet.
     config.add_facet_field 'subject_topic_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true, facet_for_filtering: 'subject_topic_facet'
-  end
+
+    # define a search field that takes you to xbrowse view
+    config.add_search_field('subject_topic_xfacet') do |field|
+      field.label = 'Subject Heading Browse'
+      field.action = '/catalog/xbrowse/subject_topic_xfacet'
+    end
+end
+```
+
+Add this line to your `app/assets/javascripts/application.js` file; it
+needs to go AFTER the require for blacklight.
+
+```javascript
+//= require blacklight_solrplugins/blacklight_solrplugins
 ```
 
 That's it!
