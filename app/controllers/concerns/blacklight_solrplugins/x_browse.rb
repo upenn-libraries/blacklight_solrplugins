@@ -63,7 +63,7 @@ module BlacklightSolrplugins::XBrowse
 
   # action
   def xbrowse
-    target = params[:target]
+    target = params[:q]
     ref = params[:ref] # reference point, used for paging
     dir = params[:dir]
     per_page = params.fetch(:per_page, blacklight_config.default_per_page).to_i

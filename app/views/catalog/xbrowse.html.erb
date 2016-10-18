@@ -5,7 +5,7 @@
 
 <div id="content" class="<%= main_content_classes %>">
   <h2><%= @facet.label %> index</h2>
-  <p>Starting point: "<%= params[:target] %>"</p>
+  <p>Starting point: "<%= params[:q] %>"</p>
   <p>Browsing headings over a set of <strong><%= number_with_delimiter(@response.total_count) %></strong> records</p>
 
   <%= render 'constraints' %>

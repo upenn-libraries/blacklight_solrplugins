@@ -7,8 +7,6 @@ Blacklight.onLoad(function() {
             var x_action = selected.attr("data-action");
             if (x_action) {
                 $(form).attr("action", x_action);
-                // TODO: should it be possible to specify q AND target?
-                $(form).find("input[name='q']").attr("name", "target");
             }
         }
     });
