@@ -62,7 +62,7 @@ module BlacklightSolrplugins
         field_def = blacklight_config.search_fields[key]
         # replace entries whose field objects define 'action'
         if field_def.action
-          [field_def.label, field_def.key, { "x-action" => field_def.action } ]
+          [field_def.label, field_def.key, { 'data-action' => field_def.action } ]
         else
           field_entry
         end

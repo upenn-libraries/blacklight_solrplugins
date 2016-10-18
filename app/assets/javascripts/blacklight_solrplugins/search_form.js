@@ -4,7 +4,7 @@ Blacklight.onLoad(function() {
         var form = event.currentTarget;
         var selected = $(form).find("#search_field option:selected").first();
         if(selected.length > 0) {
-            var x_action = selected.attr("x-action");
+            var x_action = selected.attr("data-action");
             if (x_action) {
                 $(form).attr("action", x_action);
                 // TODO: should it be possible to specify q AND target?
