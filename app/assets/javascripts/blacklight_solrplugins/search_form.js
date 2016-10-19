@@ -7,6 +7,9 @@ Blacklight.onLoad(function() {
             var x_action = selected.attr("data-action");
             if (x_action) {
                 $(form).attr("action", x_action);
+                // remove params for existing search
+                $(form).find("input[name='dir']").remove();
+                $(form).find("input[name='ref']").remove();
             }
         }
     });
