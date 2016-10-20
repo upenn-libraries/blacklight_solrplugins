@@ -3,7 +3,7 @@ PATH
   specs:
     blacklight_solrplugins (0.0.1)
       blacklight (~> 6.0)
-      rails (~> 4.2.5.1)
+      rails (~> 4.2.5)
 
 GEM
   remote: https://rubygems.org/
