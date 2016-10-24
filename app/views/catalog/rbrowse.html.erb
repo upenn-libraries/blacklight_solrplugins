@@ -1,6 +1,6 @@
 
 <div id="sidebar" class="<%= sidebar_classes %>">
-    <%= render 'search_sidebar' %>
+  <%= render 'search_sidebar' %>
 </div>
 
 <div id="content" class="<%= main_content_classes %>">
@@ -11,31 +11,29 @@
   <%= render 'constraints' %>
 
   <div id="sortAndPerPage" class="clearfix">
-    <%= render :partial => "browse_paginate", :object => @display_facet_window, :locals => { :doc_centric => false } %>
+    <%= render :partial => "browse_paginate", :object => @display_facet_window, :locals => { :doc_centric => true } %>
     <div class="pull-right">
       <%= render :partial => "browse_per_page" %>
     </div>
   </div>
 
   <ul class="facet-values list-unstyled">
-  <% @display_facet_window.items.each do |facet_item| %>
-      <li>
+    <% @display_facet_window.items.each do |facet_item| %>
+        <li>
         <span class="facet-label">
         <%= link_to(facet_item.value, search_path_for_xfacet(@facet, facet_item.value), :class=>"facet_select") %>
-        (<%= xfacet_record_count(facet_item.hits) %>)
+          (<%= xfacet_record_count(facet_item.hits) %>)
         </span>
-      </li>
-      <% if facet_item.refs.count > 0 %>
-        <% facet_item.refs.each do |ref| %>
-            <% facet_item.ref_names_and_counts(ref).each do |ref_value, count| %>
-            <li>
+        </li>
+        <% if facet_item.docs.count > 0 %>
+            <% facet_item.docs.each do |doc_id, doc_hash| %>
+                <li>
             <span class="facet-label" style="padding-left: 4em;">
-            <%= ref.humanize.capitalize %>: <%= link_to ref_value, search_path_for_xfacet(@facet, ref_value) %> (<%= xfacet_record_count(count) %>)
+            <%= doc_id %>: URL <%= url_for_document(doc_id) %>
             </span>
-            </li>
+                </li>
             <% end %>
         <% end %>
-      <% end %>
-  <% end %>
+    <% end %>
   </ul>
 </div>

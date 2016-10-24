@@ -1,0 +1,7 @@
+<div class="page_links">
+
+  <%= link_to_if(browse_paginate.has_previous, '&laquo; Previous'.html_safe, xbrowse_previous_link(browse_paginate, doc_centric: doc_centric)) %>
+  |
+  <%= link_to_if(browse_paginate.has_next, 'Next &raquo;'.html_safe, xbrowse_next_link(browse_paginate, doc_centric: doc_centric)) %>
+
+</div>

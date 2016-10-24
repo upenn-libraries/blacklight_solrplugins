@@ -57,8 +57,9 @@ class CatalogController < ApplicationController
 
     # this is a regular facet
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
-    # this is an xfacet. "show: false" suppresses it from sidebar. facet_for_filtering
-    # is used to construct search URLs that filter on a corresponding regular facet.
+    # facet marked as 'xfacet' and suppressed from sidebar with 'show: false'
+    config.add_facet_field 'title_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true
+    # an xfacet field. 'facet_for_filtering' is used to construct search URLs that filter on a corresponding regular facet.
     config.add_facet_field 'subject_topic_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true, facet_for_filtering: 'subject_topic_facet'
 
     # define a search field that takes you to xbrowse view
@@ -66,6 +67,13 @@ class CatalogController < ApplicationController
       field.label = 'Subject Heading Browse'
       field.action = '/catalog/xbrowse/subject_topic_xfacet'
     end
+
+    # define a search field that takes you to rbrowse view (doc-centric browse)
+    config.add_search_field('title_facet') do |field|
+      field.label = 'Title Browse'
+      field.action = '/catalog/rbrowse/title_facet'
+    end
+
 end
 ```
 
@@ -90,7 +98,7 @@ class MarcIndexer < Blacklight::Marc::Indexer
   # add this line to provide #references method
   include BlacklightSolrplugins::Indexer
 
-  # xfacet fields should call #references
+  # xfacet fields should call #references to construct JSON
   to_field 'subject_topic_facet', extract_marc("600abcdq:610ab:611ab:630aa:650aa:653aa:654ab:655ab", :trim_punctuation => true) do |r, acc|
     acc.map! { |v| references(v) }
   end
