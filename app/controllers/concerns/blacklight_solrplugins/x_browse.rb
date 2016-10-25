@@ -45,6 +45,12 @@ module BlacklightSolrplugins::XBrowse
     if doc_centric
       # hack to circumvent RSolr calling #compact on params hash: pass a space char
       facet_target = target.present? ? target : ' '
+      # ref is a composite key (target/targetDoc) to disambiguate target
+      if ref
+        pieces = ref.split('|', 2)
+        ref = pieces[0]
+        facet_target = pieces[1]
+      end
     else
       facet_target = ref || target || ''
     end
