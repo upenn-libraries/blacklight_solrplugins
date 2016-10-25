@@ -57,7 +57,7 @@ class CatalogController < ApplicationController
 
     # this is a regular facet
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
-    # facet marked as 'xfacet' and suppressed from sidebar with 'show: false'
+    # facet marked as 'xfacet' and suppressed from sidebar with 'show: false' (which is stock Blacklight)
     config.add_facet_field 'title_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true
     # an xfacet field. 'facet_for_filtering' is used to construct search URLs that filter on a corresponding regular facet.
     config.add_facet_field 'subject_topic_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true, facet_for_filtering: 'subject_topic_facet'

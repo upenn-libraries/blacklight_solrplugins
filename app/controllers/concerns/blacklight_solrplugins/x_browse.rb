@@ -43,7 +43,8 @@ module BlacklightSolrplugins::XBrowse
     end
 
     if doc_centric
-      facet_target = target || ''
+      # hack to circumvent RSolr calling #compact on params hash: pass a space char
+      facet_target = target.present? ? target : ' '
     else
       facet_target = ref || target || ''
     end
@@ -58,8 +59,7 @@ module BlacklightSolrplugins::XBrowse
         additional_params["f.#{facet.field}.facet.target.strict"] = true
       end
       if doc_centric
-        # This is hacky: RSolr calls #compact on params hash, so we need to pass a space char
-        # instead of a blank string, to ensure it makes it through.
+        # hack to circumvent RSolr calling #compact on params hash: pass a space char
         additional_params["f.#{facet.field}.facet.targetDoc"] = ref || ' '
       end
       search_builder.merge(additional_params)
