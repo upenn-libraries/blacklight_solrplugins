@@ -4,6 +4,17 @@ module BlacklightSolrplugins
   # Response subclass for handling custom facet payloads.
   class Response < Blacklight::Solr::Response
 
+    # create a custom FacetItem object
+    def create_facet_item(facet_field_name, display_value, payload)
+      i = BlacklightSolrplugins::FacetItem.new(value: display_value, payload: payload)
+      # solr facet.missing serialization
+      if display_value.nil?
+        i.label = I18n.t(:"blacklight.search.fields.facet.missing.#{facet_field_name}", default: [:"blacklight.search.facets.missing"])
+        i.fq = "-#{facet_field_name}:[* TO *]"
+      end
+      i
+    end
+
     # Override Blacklight::Solr::Response::Facets#facet_field_aggregations
     # to populate the FacetField and FacetItem objects with
     # additional data from the xfacet payload
@@ -21,20 +32,23 @@ module BlacklightSolrplugins
 
         BlacklightSolrplugins::Util.named_list_as_hash(values['terms']).each do |display_value, payload|
 
-          i = BlacklightSolrplugins::FacetItem.new(value: display_value, hits: payload['count'], payload: payload)
+          is_doc_centric = items.any? { |item| item.docs.size > 0 }
 
-          # solr facet.missing serialization
-          if display_value.nil?
-            i.label = I18n.t(:"blacklight.search.fields.facet.missing.#{facet_field_name}", default: [:"blacklight.search.facets.missing"])
-            i.fq = "-#{facet_field_name}:[* TO *]"
+          # flatten the nested structure for doc-centric facet items
+          if is_doc_centric
+            payload['docs'].each do |doc|
+              i = create_facet_item(facet_field_name, display_value, { 'count' => 1, 'docs' => [ doc ] })
+              items << i
+            end
+          else
+            i = create_facet_item(facet_field_name, display_value, payload)
+            items << i
           end
-
-          items << i
         end
 
         options = facet_field_aggregation_options(facet_field_name)
 
-        # merge in additional fields from the xfacet payload
+        # merge in additional fields from the facet payload
         options.merge!({ :count => values['count'], :target_offset => values['target_offset']})
 
         hash[facet_field_name] = BlacklightSolrplugins::FacetField.new(facet_field_name,

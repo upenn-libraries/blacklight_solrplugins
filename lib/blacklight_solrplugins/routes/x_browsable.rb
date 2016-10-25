@@ -9,6 +9,7 @@ module BlacklightSolrplugins
       def call(mapper, options = {})
         options = @defaults.merge(options)
         mapper.get "xbrowse/:id", action: 'xbrowse', as: 'xbrowse'
+        mapper.get "rbrowse/:id", action: 'rbrowse', as: 'rbrowse'
       end
     end
   end
