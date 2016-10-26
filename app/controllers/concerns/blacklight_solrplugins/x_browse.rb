@@ -10,7 +10,7 @@ module BlacklightSolrplugins::XBrowse
   # to include xbrowse pages, we need this method to return the right links
   # for facets sidebar, query constraints panel, and maybe other places.
   def search_action_path(*args)
-    if params[:action] == 'xbrowse'
+    if ['xbrowse', 'rbrowse'].member?(params[:action])
       url_for(*args)
     else
       super(*args)
