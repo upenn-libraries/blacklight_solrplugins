@@ -10,7 +10,7 @@ module BlacklightSolrplugins::XBrowse
   # to include xbrowse pages, we need this method to return the right links
   # for facets sidebar, query constraints panel, and maybe other places.
   def search_action_path(*args)
-    if params[:action] == 'xbrowse'
+    if ['xbrowse', 'rbrowse'].member?(params[:action])
       url_for(*args)
     else
       super(*args)
@@ -45,6 +45,12 @@ module BlacklightSolrplugins::XBrowse
     if doc_centric
       # hack to circumvent RSolr calling #compact on params hash: pass a space char
       facet_target = target.present? ? target : ' '
+      # ref is a composite key (target/targetDoc) to disambiguate target
+      if ref
+        pieces = ref.split('|', 2)
+        ref = pieces[0]
+        facet_target = pieces[1]
+      end
     else
       facet_target = ref || target || ''
     end

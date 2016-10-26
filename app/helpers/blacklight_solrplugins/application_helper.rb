@@ -42,7 +42,11 @@ module BlacklightSolrplugins
     def xbrowse_previous_link(facetwindow, doc_centric: false)
       first = facetwindow.items.first
       if first
-        ref = doc_centric ? first.docs[0][0] : first.value
+        if doc_centric
+          ref = first.docs[0][0] + '|' + first.value
+        else
+          ref = first.value
+        end
         url_for(search_state.params_for_search(ref: ref, dir: "back"))
       end
     end
@@ -50,7 +54,11 @@ module BlacklightSolrplugins
     def xbrowse_next_link(facetwindow, doc_centric: false)
       last = facetwindow.items.last
       if last
-        ref = doc_centric ? last.docs[0][0] : last.value
+        if doc_centric
+          ref = last.docs[0][0] + '|' + last.value
+        else
+          ref = last.value
+        end
         url_for(search_state.params_for_search(ref: ref, dir: "forward"))
       end
     end
