@@ -35,7 +35,7 @@ module BlacklightSolrplugins
       # NOTE that we use the facet_for_filtering field, NOT the xfacet field,
       # when adding a query constraint to search URL
       args = search_state.add_facet_params_and_redirect(xfacet_field['facet_for_filtering'], facet_value)
-      args.reject! { |arg| %w(dir ref target).member? arg }
+      args.reject! { |arg| %w(dir ref target search_field q).member? arg }
       search_action_url(args)
     end
 
