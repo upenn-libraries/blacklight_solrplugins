@@ -57,7 +57,7 @@ module BlacklightSolrplugins::XBrowse
 
     (response, document_list) = search_results(search_params.merge(:rows => 0)) do |search_builder|
       additional_params = {
-          "f.#{facet.field}.facet.target": doc_centric ? facet_target : JSON.dump(facet_target),
+          "f.#{facet.field}.facet.target": JSON.dump(facet_target),
           "f.#{facet.field}.facet.sort": 'index',
           "f.#{facet.field}.facet.offset": offset,
           "f.#{facet.field}.facet.limit": per_page + 2 }

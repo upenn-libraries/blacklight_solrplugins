@@ -8,6 +8,10 @@ This contains:
 - modifications to Blacklight to handle cross-reference facet fields
 - stock controllers/views for facet browsing showing cross-references
 
+## Solr Schema
+
+TODO: link to schema defining _xfacet dynamic field types.
+
 ## How To Use This
 
 Include this in your app's Gemfile.
@@ -58,7 +62,7 @@ class CatalogController < ApplicationController
     # this is a regular facet
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
     # facet marked as 'xfacet' and suppressed from sidebar with 'show: false' (which is stock Blacklight)
-    config.add_facet_field 'title_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true
+    config.add_facet_field 'title_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true
     # an xfacet field. 'facet_for_filtering' is used to construct search URLs that filter on a corresponding regular facet.
     config.add_facet_field 'subject_topic_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true, facet_for_filtering: 'subject_topic_facet'
 
@@ -69,9 +73,9 @@ class CatalogController < ApplicationController
     end
 
     # define a search field that takes you to rbrowse view (doc-centric browse)
-    config.add_search_field('title_facet') do |field|
+    config.add_search_field('title_xfacet') do |field|
       field.label = 'Title Browse'
-      field.action = '/catalog/rbrowse/title_facet'
+      field.action = '/catalog/rbrowse/title_xfacet'
     end
 
 end
