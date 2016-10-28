@@ -43,7 +43,7 @@ module BlacklightSolrplugins
       first = facetwindow.items.first
       if first
         if doc_centric
-          ref = first.docs[0][0] + '|' + first.value
+          ref = first.docs[0]['id'] + '|' + first.value
         else
           ref = first.value
         end
@@ -55,12 +55,23 @@ module BlacklightSolrplugins
       last = facetwindow.items.last
       if last
         if doc_centric
-          ref = last.docs[0][0] + '|' + last.value
+          ref = last.docs[0]['id'] + '|' + last.value
         else
           ref = last.value
         end
         url_for(search_state.params_for_search(ref: ref, dir: "forward"))
       end
+    end
+
+    def render_rbrowse_display_fields(facet, doc_presenter)
+      (facet.xfacet_rbrowse_fields || []).map do |fieldname|
+        if doc_presenter.field_value(fieldname).present?
+          show_field = blacklight_config.show_fields[fieldname]
+          if show_field
+            "#{blacklight_config.show_fields[fieldname].label}: #{doc_presenter.field_value(fieldname)}"
+          end
+        end
+      end.compact.join('<br/>').html_safe
     end
 
     # override Blacklight::ConfigurationHelperBehavior#search_fields

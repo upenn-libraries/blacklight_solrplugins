@@ -19,21 +19,7 @@
 
   <ul class="facet-values list-unstyled">
     <% @display_facet_window.items.each do |facet_item| %>
-        <li>
-        <span class="facet-label">
-          <%= facet_item.value %>
-          (<%= xfacet_record_count(facet_item.hits) %>)
-        </span>
-        </li>
-        <% if facet_item.docs.count > 0 %>
-            <% facet_item.docs.each do |doc_id, doc_hash| %>
-                <li>
-            <span class="facet-label" style="padding-left: 4em;">
-            <%= link_to(doc_id, solr_document_path(doc_id)) %>
-            </span>
-                </li>
-            <% end %>
-        <% end %>
+        <%= render :partial => 'rbrowse_facet_item', :object => facet_item, :locals => { :facet => @facet } %>
     <% end %>
   </ul>
 </div>

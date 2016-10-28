@@ -1,0 +1,14 @@
+<%# 'facet' local var = facet configuration field object %>
+<% rbrowse_facet_item.docs.each do |doc| %>
+  <% doc_presenter = show_presenter(doc) %>
+  <li>
+    <span class="facet-label">
+      <%= link_to(rbrowse_facet_item.value, solr_document_path(doc['id'])) %>
+    </span>
+  </li>
+  <li>
+    <span class="facet-label" style="padding-left: 4em;">
+      <%= render_rbrowse_display_fields(facet, doc_presenter) %>
+    </span>
+  </li>
+<% end %>

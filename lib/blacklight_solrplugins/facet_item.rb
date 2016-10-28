@@ -21,8 +21,9 @@ module BlacklightSolrplugins
     end
 
     # available in doc-centric payloads
+    # returns array of SolrDocuments
     def docs
-      payload['docs'] || {}
+      payload['docs'] || []
     end
 
     # returns array of reference types in this FacetItem

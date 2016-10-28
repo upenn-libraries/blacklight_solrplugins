@@ -34,10 +34,10 @@ module BlacklightSolrplugins
 
           is_doc_centric = items.any? { |item| item.docs.size > 0 }
 
-          # flatten the nested structure for doc-centric facet items
           if is_doc_centric
-            payload['docs'].each do |doc|
-              i = create_facet_item(facet_field_name, display_value, { 'count' => 1, 'docs' => [ doc ] })
+            # flatten the nested structure for doc-centric facet items
+            payload['docs'].values.each do |doc|
+              i = create_facet_item(facet_field_name, display_value, { 'count' => 1, 'docs' => [ SolrDocument.new(doc, self) ] })
               items << i
             end
           else
