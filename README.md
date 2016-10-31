@@ -44,16 +44,11 @@ class CatalogController < ApplicationController
 
   # ...
 
-  # override Blacklight::Controller
-  def search_state
-    @search_state ||= BlacklightSolrplugins::SearchState.new(params, blacklight_config)
-  end
-
-  # ...
-
   configure_blacklight do |config|
   
-    # override Response class so xfacet payloads get interpreted correctly
+    # override Response class so xfacet payloads get interpreted correctly.
+    # if you have your own or another Response subclass you want to use,
+    # include the BlacklightSolrplugins::ResponseFacets module in it.
     config.response_model = BlacklightSolrplugins::Response
 
     # typically, you'll want both a facet field that behaves normally,
