@@ -33,9 +33,11 @@ module BlacklightSolrplugins::Indexer
       raise "'raw' is not a string or hash representing multipart string: #{raw}"
     end
     if refs
-      refs.values.each do |val|
-        if !Validators.validate_multipart_string(val)
-          raise "ref value is not a string or hash representing multipart string: #{val}"
+      refs.values.each do |array_val|
+        array_val.each do |val|
+          if !Validators.validate_multipart_string(val)
+            raise "ref value is not a string or hash representing multipart string: #{val}"
+          end
         end
       end
     end
