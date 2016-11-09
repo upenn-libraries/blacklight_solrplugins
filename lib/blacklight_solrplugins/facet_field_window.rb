@@ -18,6 +18,11 @@ module BlacklightSolrplugins
       @facetfield = facetfield
       @size = size
       @expected_pos_in_results = expected_pos_in_results
+      @items = []
+      @has_previous = false
+      @has_next = false
+
+      return if @facetfield.items.size == 0
 
       via_target = expected_pos_in_results == 1
       via_back_button = expected_pos_in_results == size + 1
