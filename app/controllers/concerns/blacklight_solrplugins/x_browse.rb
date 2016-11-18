@@ -57,6 +57,10 @@ module BlacklightSolrplugins::XBrowse
 
     (response, document_list) = search_results(search_params.merge(:rows => 0)) do |search_builder|
       additional_params = {
+          # distrib.singlePass is required in order to make solrplugins
+          # include documents in the doc-centric xfacet payloads when running
+          # distributed Solr
+          'distrib.singlePass': 'true',
           "f.#{facet.field}.facet.target": JSON.dump(facet_target),
           "f.#{facet.field}.facet.sort": 'index',
           "f.#{facet.field}.facet.offset": offset,
