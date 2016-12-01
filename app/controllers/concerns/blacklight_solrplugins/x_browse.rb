@@ -43,8 +43,7 @@ module BlacklightSolrplugins::XBrowse
     end
 
     if doc_centric
-      # hack to circumvent RSolr calling #compact on params hash: pass a space char
-      facet_target = target.present? ? target : ' '
+      facet_target = target.present? ? target : ''
       # ref is a composite key (target/targetDoc) to disambiguate target
       if ref
         pieces = ref.split('|', 2)
@@ -69,8 +68,7 @@ module BlacklightSolrplugins::XBrowse
         additional_params["f.#{facet.field}.facet.target.strict"] = true
       end
       if doc_centric
-        # hack to circumvent RSolr calling #compact on params hash: pass a space char
-        additional_params["f.#{facet.field}.facet.targetDoc"] = ref || ' '
+        additional_params["f.#{facet.field}.facet.targetDoc"] = ref || ''
       end
       search_builder.merge(additional_params)
     end

@@ -32,8 +32,7 @@ module BlacklightSolrplugins
         next if !values.member?('terms')
 
         BlacklightSolrplugins::Util.named_list_as_hash(values['terms']).each do |display_value, payload|
-
-          is_doc_centric = items.any? { |item| item.docs.size > 0 }
+          is_doc_centric = (payload['docs'] || {}).length > 0
 
           if is_doc_centric
             # flatten the nested structure for doc-centric facet items
