@@ -14,6 +14,7 @@ module BlacklightSolrplugins
     # @param [Numeric] size the size of the window
     # @param [Numeric] expected_pos_in_results the position we expect to find our target;
     #   we use this to compare to actual target_offset value returned from Solr.
+    #   this value is relative to the response set, NOT the window size.
     def initialize(facetfield, size, expected_pos_in_results)
       @facetfield = facetfield
       @size = size
