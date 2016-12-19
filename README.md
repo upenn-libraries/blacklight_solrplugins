@@ -5,8 +5,10 @@ A Rails engine that adds support for [solrplugins](https://github.com/upenn-libr
 Blacklight.
 
 This contains:
-- modifications to Blacklight to handle cross-reference facet fields
-- stock controllers/views for facet browsing showing cross-references
+- modifications to Blacklight to handle the custom facet payloads
+  from solrplugins
+- stock controllers/views for facet browsing showing cross-references and 
+  for title browsing
 
 ## Solr Schema
 
@@ -75,6 +77,15 @@ class CatalogController < ApplicationController
       field.action = '/catalog/rbrowse/title_xfacet'
     end
 
+end
+```
+
+Override `BlacklightHelper` to include `BlacklightSolrplugins::BlacklightOverride`:
+
+```ruby
+module BlacklightHelper
+  include Blacklight::BlacklightHelperBehavior
+  include BlacklightSolrplugins::BlacklightOverride
 end
 ```
 

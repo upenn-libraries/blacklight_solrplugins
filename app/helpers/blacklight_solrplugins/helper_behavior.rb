@@ -1,27 +1,6 @@
 module BlacklightSolrplugins
   module HelperBehavior
 
-    # OBSOLETE: xfacets shouldn't be used for display.
-    # override from Blacklight::FacetsHelperBehavior.
-    # item can be a string or a FacetItem, as this used for both rendering
-    # the value from a URL facet param AND the facets sidebar.
-    def facet_display_value(field, item)
-      facet_config = facet_configuration_for_field(field)
-      if facet_config[:xfacet]
-        if item.is_a?(String)
-          filing, prefix = item.split("|")
-          return prefix.to_s + filing.to_s
-        else
-          _self = item.payload[:self]
-          if _self
-            return (_self[:prefix] || "") + (_self[:filing] || "")
-          end
-        end
-      else
-        super(field, item)
-      end
-    end
-
     def xfacet_record_count(count)
       "#{count} record#{count > 1 ? 's' : ''}"
     end
@@ -74,22 +53,6 @@ module BlacklightSolrplugins
         end
       end.compact.join("\n") + '</dl>'
       html.html_safe
-    end
-
-    # override Blacklight::ConfigurationHelperBehavior#search_fields
-    # search_form.js detects the attributes on option elements
-    # and makes the form submit do the right thing
-    def search_fields
-      super.map do |field_entry|
-        key = field_entry[1]
-        field_def = blacklight_config.search_fields[key]
-        # replace entries whose field objects define 'action'
-        if field_def.action
-          [field_def.label, field_def.key, { 'data-action' => field_def.action } ]
-        else
-          field_entry
-        end
-      end
     end
 
   end
