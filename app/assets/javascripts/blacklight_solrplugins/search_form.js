@@ -24,6 +24,7 @@ Blacklight.onLoad(function() {
     // compatibility with blacklight_advanced_search: adv search form should
     // always clear out xfacet params
     $("form.advanced").on("submit", function(event) {
+        var form = event.currentTarget;
         removeXfacetParams(form);
     });
 
