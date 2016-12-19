@@ -1,5 +1,5 @@
 module BlacklightSolrplugins
-  module ApplicationHelper
+  module HelperBehavior
 
     # OBSOLETE: xfacets shouldn't be used for display.
     # override from Blacklight::FacetsHelperBehavior.

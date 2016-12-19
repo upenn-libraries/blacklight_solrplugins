@@ -5,7 +5,7 @@ module BlacklightSolrplugins
     engine_name "blacklight_solrplugins"
 
     initializer 'blacklight_solrplugins.helpers' do |app|
-      ActionView::Base.send :include, BlacklightSolrplugins::ApplicationHelper
+      ActionView::Base.send :include, BlacklightSolrpluginsHelper
     end
 
     config.autoload_paths += %W(
