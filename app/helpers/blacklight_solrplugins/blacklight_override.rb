@@ -1,7 +1,7 @@
 module BlacklightSolrplugins
 
   # Overrides for BlacklightHelper.
-  # This should be included in the main app's ApplicationHelper
+  # This should be included in the main app's BlacklightHelper
   module BlacklightOverride
 
     # override Blacklight::ConfigurationHelperBehavior#search_fields
