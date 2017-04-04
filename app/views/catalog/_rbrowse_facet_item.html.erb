@@ -3,7 +3,7 @@
   <% doc_presenter = show_presenter(doc) %>
   <li>
     <span class="facet-label">
-      <%= link_to(rbrowse_facet_item.value, solr_document_path(doc['id'])) %>
+      <%= render_rbrowse_result(rbrowse_facet_item, doc_presenter) %>
     </span>
   </li>
   <li>

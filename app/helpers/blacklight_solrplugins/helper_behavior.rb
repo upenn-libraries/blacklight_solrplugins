@@ -42,6 +42,13 @@ module BlacklightSolrplugins
       end
     end
 
+    # render the link and its text content, for an rbrowse result item
+    # @param [BlacklightSolrplugins::FacetItem] facet_item
+    # @param [Blacklight::ShowPresenter] doc_presenter
+    def render_rbrowse_result(facet_item, doc_presenter)
+      link_to(facet_item.value, solr_document_path(doc_presenter.field_value('id')))
+    end
+
     def render_rbrowse_display_fields(facet, doc_presenter)
       html = '<dl class="dl-horizontal dl-invert">' +
       (facet.xfacet_rbrowse_fields || []).map do |fieldname|
