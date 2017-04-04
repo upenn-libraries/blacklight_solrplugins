@@ -42,6 +42,14 @@ module BlacklightSolrplugins
       end
     end
 
+    def render_xbrowse_result(facet_item, facet)
+      facet_value = facet_item.value
+      if facet['xfacet_value_helper']
+        facet_value = send(facet['xfacet_value_helper'].to_sym, facet_item.value)
+      end
+      link_to(facet_item.value, search_path_for_xfacet(facet, facet_value), :class=>"facet_select")
+    end
+
     # render the link and its text content, for an rbrowse result item
     # @param [BlacklightSolrplugins::FacetItem] facet_item
     # @param [Blacklight::ShowPresenter] doc_presenter

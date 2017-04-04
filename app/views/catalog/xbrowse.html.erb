@@ -21,7 +21,7 @@
   <% @display_facet_window.items.each do |facet_item| %>
       <li>
         <span class="facet-label">
-        <%= link_to(facet_item.value, search_path_for_xfacet(@facet, facet_item.value), :class=>"facet_select") %>
+        <%= render_xbrowse_result(facet_item, @facet) %>
         (<%= xfacet_record_count(facet_item.hits) %>)
         </span>
       </li>
