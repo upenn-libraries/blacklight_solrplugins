@@ -13,6 +13,7 @@ module BlacklightSolrplugins
   autoload :Indexer, 'blacklight_solrplugins/indexer'
   autoload :FacetField, 'blacklight_solrplugins/facet_field'
   autoload :FacetFieldWindow, 'blacklight_solrplugins/facet_field_window'
+  autoload :FacetFieldsQueryFilter, 'blacklight_solrplugins/facet_fields_query_filter'
   autoload :FacetItem, 'blacklight_solrplugins/facet_item'
   autoload :Response, 'blacklight_solrplugins/response'
   autoload :ResponseFacets, 'blacklight_solrplugins/response_facets'

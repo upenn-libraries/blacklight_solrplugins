@@ -98,6 +98,17 @@ needs to go AFTER the require for blacklight.
 //= require blacklight_solrplugins/blacklight_solrplugins
 ```
 
+Create a `SearchBuilder` if you don't already have one in your
+project, and mix in `BlacklightSolrplugins::FacetFieldsQueryFilter` so
+that xfacets only get included in the Solr query when necessary.
+
+```
+class SearchBuilder < Blacklight::SearchBuilder
+  include Blacklight::Solr::SearchBuilderBehavior
+  include BlacklightSolrplugins::FacetFieldsQueryFilter
+end
+```
+
 That's it!
 
 ## Indexing
