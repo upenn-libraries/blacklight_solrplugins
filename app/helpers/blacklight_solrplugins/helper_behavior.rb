@@ -60,13 +60,17 @@ module BlacklightSolrplugins
     def render_rbrowse_display_fields(facet, doc_presenter)
       html = '<dl class="dl-horizontal dl-invert">' +
       (facet.xfacet_rbrowse_fields || []).map do |fieldname|
-        if doc_presenter.field_value(fieldname).present?
-          field = blacklight_config.show_fields[fieldname] || blacklight_config.index_fields[fieldname]
-          label = field ? field.label : fieldname
-          "<dt>#{label}:</dt><dd>#{doc_presenter.field_value(fieldname)}</dd>"
-        end
+        render_rbrowse_display_field(fieldname, doc_presenter)
       end.compact.join("\n") + '</dl>'
       html.html_safe
+    end
+
+    def render_rbrowse_display_field(fieldname, doc_presenter)
+      if doc_presenter.field_value(fieldname).present?
+        field = blacklight_config.show_fields[fieldname] || blacklight_config.index_fields[fieldname]
+        label = field ? field.label : fieldname
+        "<dt>#{label}:</dt><dd>#{doc_presenter.field_value(fieldname)}</dd>"
+      end
     end
 
   end
