@@ -7,6 +7,6 @@
     </span>
   </li>
   <li>
-    <%= render_rbrowse_display_fields(facet, doc_presenter) %>
+    <%= render partial: 'rbrowse_display_fields', locals: { facet: facet, doc_presenter: doc_presenter } %>
   </li>
 <% end %>

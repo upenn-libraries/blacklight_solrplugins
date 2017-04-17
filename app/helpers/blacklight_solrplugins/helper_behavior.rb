@@ -58,11 +58,9 @@ module BlacklightSolrplugins
     end
 
     def render_rbrowse_display_fields(facet, doc_presenter)
-      html = '<dl class="dl-horizontal dl-invert">' +
       (facet.xfacet_rbrowse_fields || []).map do |fieldname|
         render_rbrowse_display_field(fieldname, doc_presenter)
-      end.compact.join("\n") + '</dl>'
-      html.html_safe
+      end.compact.join("\n").html_safe
     end
 
     def render_rbrowse_display_field(fieldname, doc_presenter)
