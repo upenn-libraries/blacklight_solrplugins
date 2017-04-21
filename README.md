@@ -46,21 +46,23 @@ class CatalogController < ApplicationController
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
 
     # facet marked as 'xfacet', suppressed from sidebar with 'show: false' (which is stock Blacklight)
+    # rendered using 'rbrowse' (document-centric) view type
     # with fields defined for rbrowse display (which must be defined as either a show_field or 
     # index_field in Blacklight config)
     config.add_facet_field 'title_xfacet', label: 'Title', limit: 20, index_range: 'A'..'Z', 
         show: false, xfacet: true, xfacet_view_type: 'rbrowse', xfacet_rbrowse_fields: %w(published_display format)
         
     # facet marked as 'xfacet'; 'facet_for_filtering' is used to construct search URLs that filter on a corresponding regular facet.
+    # rendered using 'xbrowse' (non-document-centric) view type
     # 'xfacet_value_helper' contains the name of a helper method for translating xfacet values to facet values (you must define this helper!)
 config.add_facet_field 'subject_topic_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true,  xfacet_view_type: 'xbrowse', facet_for_filtering: 'subject_topic_facet', xfacet_value_helper: 'subject_xfacet_to_facet'
 
-    # define search fields with the same name as facet_fields above
+    # define search fields for xfacet browse: these MUST have the same name as the facet_fields above
+
     config.add_search_field('subject_topic_xfacet') do |field|
       field.label = 'Subject Heading Browse'
     end
 
-    # define a search field that takes you to rbrowse view (doc-centric browse)
     config.add_search_field('title_xfacet') do |field|
       field.label = 'Title Browse'
     end
