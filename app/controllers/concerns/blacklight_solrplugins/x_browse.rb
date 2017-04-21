@@ -54,11 +54,11 @@ module BlacklightSolrplugins::XBrowse
       # distrib.singlePass is required in order to make solrplugins
       # include documents in the doc-centric xfacet payloads when running
       # distributed Solr
-      'distrib.singlePass': 'true',
-      "f.#{xfacet.field}.facet.target": JSON.dump(facet_target),
-      "f.#{xfacet.field}.facet.sort": 'index',
-      "f.#{xfacet.field}.facet.offset": offset,
-      "f.#{xfacet.field}.facet.limit": per_page + 2 }
+      'distrib.singlePass' => 'true',
+      "f.#{xfacet.field}.facet.target" => JSON.dump(facet_target),
+      "f.#{xfacet.field}.facet.sort" => 'index',
+      "f.#{xfacet.field}.facet.offset" => offset,
+      "f.#{xfacet.field}.facet.limit" => per_page + 2 }
     if ref
       additional_params["f.#{xfacet.field}.facet.target.strict"] = true
     end
@@ -80,23 +80,19 @@ module BlacklightSolrplugins::XBrowse
   # This handles xbrowse/rbrowse searches
   def search_results(search_params)
     xfacet = get_xfacet_for_search_field
-    unless xfacet
-      return super(search_params)
+    if xfacet
+      params_without_q = search_params.dup
+      params_without_q.delete(:q)
+
+      (response, document_list) = super(params_without_q.merge(:rows => 0)) do |search_builder|
+        additional_params = xfacet_query_params(xfacet, search_params)
+        search_builder.merge(additional_params)
+      end
+
+      [response, document_list]
+    else
+      super(search_params)
     end
-
-    params_without_q = search_params.dup
-    params_without_q.delete(:q)
-
-    (response, document_list) = super(params_without_q.merge(:rows => 0)) do |search_builder|
-      additional_params = xfacet_query_params(xfacet, search_params)
-      search_builder.merge(additional_params)
-    end
-
-    display_facet = response.aggregations[xfacet.key]
-    display_facet_window =
-        BlacklightSolrplugins::FacetFieldWindow.new(display_facet, per_page, calc_offset_and_expected_pos(params[:dir])[1])
-
-    return [response, document_list, display_facet, display_facet_window]
   end
 
   # override Blacklight::SearchHelper#get_facet_field_response
@@ -135,8 +131,11 @@ module BlacklightSolrplugins::XBrowse
                      'catalog/xbrowse'
                  end
 
-      (@response, @document_list, @display_facet, @display_facet_window) =
-        search_results(params)
+      (@response, @document_list) = search_results(params)
+
+      @display_facet = @response.aggregations[xfacet.key]
+      @display_facet_window =
+        BlacklightSolrplugins::FacetFieldWindow.new(@display_facet, per_page, calc_offset_and_expected_pos(params[:dir])[1])
 
       respond_to do |format|
         format.html { render :template => template }
