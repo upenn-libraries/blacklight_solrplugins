@@ -7,7 +7,7 @@ Blacklight.
 This contains:
 - modifications to Blacklight to handle the custom facet payloads
   from solrplugins
-- stock controllers/views for facet browsing showing cross-references and 
+- controller concerns and views for facet browsing showing cross-references and 
   for title browsing
 
 ## Solr Schema
@@ -22,26 +22,12 @@ Include this in your app's Gemfile.
 gem 'blacklight_solrplugins', :git => 'https://github.com/upenn-libraries/blacklight_solrplugins.git'
 ```
 
-Configure routing for the xfacet browsing pages, in `config/routes.rb`:
-
-```ruby
-Rails.application.routes.draw do
-  # declare xbrowsable concern
-  concern :xbrowsable, BlacklightSolrplugins::Routes::XBrowsable.new
-
-  resource :catalog, only: [:index], as: 'catalog', path: '/catalog', controller: 'catalog' do
-    # add concern to this resource
-    concerns :xbrowsable
-  end
-end
-```
-
 Modify your `CatalogController` or other relevant controller as follows:
 
 ```ruby
 class CatalogController < ApplicationController
 
-  # mixin 'xbrowse' action
+  # mixin to override BL controller actions to handle xbrowse
   include BlacklightSolrplugins::XBrowse
 
   # ...
@@ -58,36 +44,27 @@ class CatalogController < ApplicationController
 
     # this is a regular facet
     config.add_facet_field 'subject_topic_facet', label: 'Topic', limit: 20, index_range: 'A'..'Z'
+
     # facet marked as 'xfacet', suppressed from sidebar with 'show: false' (which is stock Blacklight)
     # with fields defined for rbrowse display (which must be defined as either a show_field or 
     # index_field in Blacklight config)
-    config.add_facet_field 'title_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', 
-        show: false, xfacet: true, xfacet_rbrowse_fields: %w(published_display format)
+    config.add_facet_field 'title_xfacet', label: 'Title', limit: 20, index_range: 'A'..'Z', 
+        show: false, xfacet: true, xfacet_view_type: 'rbrowse', xfacet_rbrowse_fields: %w(published_display format)
+        
     # facet marked as 'xfacet'; 'facet_for_filtering' is used to construct search URLs that filter on a corresponding regular facet.
     # 'xfacet_value_helper' contains the name of a helper method for translating xfacet values to facet values (you must define this helper!)
-config.add_facet_field 'subject_topic_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true, facet_for_filtering: 'subject_topic_facet', xfacet_value_helper: 'subject_xfacet_to_facet'
+config.add_facet_field 'subject_topic_xfacet', label: 'Topic', limit: 20, index_range: 'A'..'Z', show: false, xfacet: true,  xfacet_view_type: 'xbrowse', facet_for_filtering: 'subject_topic_facet', xfacet_value_helper: 'subject_xfacet_to_facet'
 
-    # define a search field that takes you to xbrowse view
+    # define search fields with the same name as facet_fields above
     config.add_search_field('subject_topic_xfacet') do |field|
       field.label = 'Subject Heading Browse'
-      field.action = '/catalog/xbrowse/subject_topic_xfacet'
     end
 
     # define a search field that takes you to rbrowse view (doc-centric browse)
     config.add_search_field('title_xfacet') do |field|
       field.label = 'Title Browse'
-      field.action = '/catalog/rbrowse/title_xfacet'
     end
 
-end
-```
-
-Override `BlacklightHelper` to include `BlacklightSolrplugins::BlacklightOverride`:
-
-```ruby
-module BlacklightHelper
-  include Blacklight::BlacklightHelperBehavior
-  include BlacklightSolrplugins::BlacklightOverride
 end
 ```
 
