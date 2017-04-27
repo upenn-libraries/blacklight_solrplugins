@@ -6,10 +6,7 @@ module BlacklightSolrplugins
     end
 
     # returns a search URL (NOT an xbrowse URL)that filters on this facet value.
-    # we need this because we can't use #path_for_facet since that
-    # calls our overridden #search_action_path
-    # TODO: it'd be better to save the old #search_action_path somehow and call that
-    # but I couldn't figure out how to do that.
+    # we need this in order to use the 'facet_for_filtering' config option on facet field definitions
     def search_path_for_xfacet(xfacet_field, facet_value)
       # NOTE that we use the facet_for_filtering field, NOT the xfacet field,
       # when adding a query constraint to search URL
@@ -51,9 +48,10 @@ module BlacklightSolrplugins
     end
 
     # render the link and its text content, for an rbrowse result item
+    # @param [Blacklight::Configuration::FacetField] facet_field
     # @param [BlacklightSolrplugins::FacetItem] facet_item
     # @param [Blacklight::ShowPresenter] doc_presenter
-    def render_rbrowse_result(facet_item, doc_presenter)
+    def render_rbrowse_result(facet_field, facet_item, doc_presenter)
       link_to(facet_item.value, solr_document_path(doc_presenter.field_value('id')))
     end
 
@@ -66,7 +64,7 @@ module BlacklightSolrplugins
     def render_rbrowse_display_field(fieldname, doc_presenter)
       if doc_presenter.field_value(fieldname).present?
         field = blacklight_config.show_fields[fieldname] || blacklight_config.index_fields[fieldname]
-        label = field ? field.label : fieldname
+        label = field ? field.label : fieldname.titleize
         "<dt>#{label}:</dt><dd>#{doc_presenter.field_value(fieldname)}</dd>"
       end
     end
