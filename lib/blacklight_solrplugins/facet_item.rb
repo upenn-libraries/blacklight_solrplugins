@@ -8,7 +8,10 @@ module BlacklightSolrplugins
 
     def initialize(*args)
       super(*args)
-      self['hits'] = (payload['count'] || term_metadata['count'] || 0).to_i
+
+      self_struct = payload['self'] || {}
+
+      self['hits'] = (self_struct['count'] || payload['count'] || term_metadata['count'] || 0).to_i
     end
 
     def payload
