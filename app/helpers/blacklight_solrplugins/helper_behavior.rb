@@ -44,7 +44,11 @@ module BlacklightSolrplugins
       if facet['xfacet_value_helper']
         facet_value = send(facet['xfacet_value_helper'].to_sym, facet_item.value)
       end
-      link_to(facet_item.value, search_path_for_xfacet(facet, facet_value), :class=>"facet_select")
+      if facet_item.hits > 0
+        link_to(facet_item.value, search_path_for_xfacet(facet, facet_value), :class=>"facet_select")
+      else
+        facet_item.value
+      end
     end
 
     # render the link and its text content, for an rbrowse result item
