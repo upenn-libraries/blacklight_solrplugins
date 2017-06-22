@@ -2,7 +2,9 @@ module BlacklightSolrplugins
   module HelperBehavior
 
     def xfacet_record_count(count)
-      "#{count} record#{count > 1 ? 's' : ''}"
+      if count > 0
+        "(#{count} record#{count > 1 ? 's' : ''})"
+      end
     end
 
     # returns a search URL (NOT an xbrowse URL)that filters on this facet value.

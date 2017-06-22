@@ -22,7 +22,7 @@
       <li>
         <span class="facet-label">
         <%= render_xbrowse_result(facet_item, @facet) %>
-        (<%= xfacet_record_count(facet_item.hits) %>)
+        <%= xfacet_record_count(facet_item.hits) %>
         </span>
       </li>
       <% if facet_item.refs.count > 0 %>
@@ -30,7 +30,7 @@
             <% facet_item.ref_names_and_counts(ref).each do |ref_value, count| %>
             <li>
             <span class="facet-label" style="padding-left: 4em;">
-            <%= ref.humanize.capitalize %>: <%= link_to ref_value, search_path_for_xfacet(@facet, ref_value) %> (<%= xfacet_record_count(count) %>)
+            <%= ref.humanize.capitalize %>: <%= link_to ref_value, search_path_for_xfacet(@facet, ref_value) %> <%= xfacet_record_count(count) %>
             </span>
             </li>
             <% end %>
