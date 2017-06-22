@@ -30,7 +30,7 @@
             <% facet_item.ref_names_and_counts(ref).each do |ref_value, count| %>
             <li>
             <span class="facet-label" style="padding-left: 4em;">
-            <%= ref.humanize.capitalize %>: <%= link_to ref_value, search_path_for_xfacet(@facet, ref_value) %> <%= xfacet_record_count(count) %>
+            <%= xfacet_ref_type_display(ref) %>: <%= link_to ref_value, search_path_for_xfacet(@facet, ref_value) %> <%= xfacet_record_count(count) %>
             </span>
             </li>
             <% end %>

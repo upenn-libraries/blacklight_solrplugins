@@ -7,6 +7,11 @@ module BlacklightSolrplugins
       end
     end
 
+    # hook for transforming the reference type value into a human-readable string
+    def xfacet_ref_type_display(ref)
+      ref.humanize.capitalize
+    end
+
     # returns a search URL (NOT an xbrowse URL)that filters on this facet value.
     # we need this in order to use the 'facet_for_filtering' config option on facet field definitions
     def search_path_for_xfacet(xfacet_field, facet_value)
