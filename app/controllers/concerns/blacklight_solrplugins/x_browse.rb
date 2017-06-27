@@ -50,12 +50,15 @@ module BlacklightSolrplugins::XBrowse
       facet_target = ref || target || ''
     end
 
+    # defaults to true
+    jsonify_target = xfacet.jsonify_target.nil? || xfacet.jsonify_target
+
     additional_params = {
       # distrib.singlePass is required in order to make solrplugins
       # include documents in the doc-centric xfacet payloads when running
       # distributed Solr
       'distrib.singlePass' => 'true',
-      "f.#{xfacet.field}.facet.target" => JSON.dump(facet_target),
+      "f.#{xfacet.field}.facet.target" => jsonify_target ? JSON.dump(facet_target) : facet_target,
       "f.#{xfacet.field}.facet.sort" => 'index',
       "f.#{xfacet.field}.facet.offset" => offset,
       "f.#{xfacet.field}.facet.limit" => per_page + 2 }
