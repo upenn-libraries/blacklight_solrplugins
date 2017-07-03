@@ -36,8 +36,9 @@ module BlacklightSolrplugins
 
           if is_doc_centric
             # flatten the nested structure for doc-centric facet items
+            term_metadata = payload['termMetadata']
             payload['docs'].values.each do |doc|
-              i = create_facet_item(facet_field_name, display_value, { 'count' => 1, 'docs' => [ SolrDocument.new(doc, self) ] })
+              i = create_facet_item(facet_field_name, display_value, { 'count' => 1, 'termMetadata' => term_metadata, 'docs' => [ SolrDocument.new(doc, self) ] })
               items << i
             end
           else

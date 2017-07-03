@@ -39,26 +39,24 @@ module BlacklightSolrplugins::XBrowse
     offset, _ = calc_offset_and_expected_pos(dir)
 
     if doc_centric
-      facet_target = target.present? ? target : ''
       # ref is a composite key (target/targetDoc) to disambiguate target
       if ref
         pieces = ref.split('|', 2)
         ref = pieces[0]
         facet_target = pieces[1]
+      else
+        facet_target = target.present? ? JSON.dump(target) : '""'
       end
     else
-      facet_target = ref || target || ''
+      facet_target = ref || JSON.dump(target) || '""'
     end
-
-    # defaults to true
-    jsonify_target = xfacet.jsonify_target.nil? || xfacet.jsonify_target
 
     additional_params = {
       # distrib.singlePass is required in order to make solrplugins
       # include documents in the doc-centric xfacet payloads when running
       # distributed Solr
       'distrib.singlePass' => 'true',
-      "f.#{xfacet.field}.facet.target" => jsonify_target ? JSON.dump(facet_target) : facet_target,
+      "f.#{xfacet.field}.facet.target" => facet_target,
       "f.#{xfacet.field}.facet.sort" => 'index',
       "f.#{xfacet.field}.facet.offset" => offset,
       "f.#{xfacet.field}.facet.limit" => per_page + 2 }

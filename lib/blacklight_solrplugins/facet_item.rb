@@ -20,7 +20,7 @@ module BlacklightSolrplugins
 
     # available in doc-centric payloads
     def term_metadata
-      payload['termMetadata'] || {}
+      payload['termMetadata'] || payload
     end
 
     # available in doc-centric payloads
@@ -31,7 +31,7 @@ module BlacklightSolrplugins
 
     # returns array of reference types in this FacetItem
     def refs
-      (payload['refs'] || {}).keys || []
+      (term_metadata['refs'] || {}).keys || []
     end
 
     # returns hash of names to counts
