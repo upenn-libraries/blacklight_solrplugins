@@ -22,13 +22,17 @@ module BlacklightSolrplugins
       search_action_url(args)
     end
 
-    def build_xbrowse_ref(term_metadata)
+    def build_xbrowse_ref(term_metadata, default_value)
       self_struct = term_metadata['self']
-      prefix = self_struct['prefix']
-      if prefix.nil? || prefix == ''
-        ref = self_struct['filing'] || ''
+      if self_struct.nil?
+        ref = default_value
       else
-        ref = {'prefix' => prefix, 'filing' => (self_struct['filing'] || '')}
+        prefix = self_struct['prefix']
+        if prefix.nil? || prefix == ''
+          ref = self_struct['filing'] || ''
+        else
+          ref = {'prefix' => prefix, 'filing' => (self_struct['filing'] || '')}
+        end
       end
       JSON.dump(ref)
     end
@@ -36,7 +40,7 @@ module BlacklightSolrplugins
     def xbrowse_previous_link(facetwindow, doc_centric: false)
       first = facetwindow.items.first
       if first
-        term_ref = build_xbrowse_ref(first.term_metadata)
+        term_ref = build_xbrowse_ref(first.term_metadata, first.value)
         if doc_centric
           ref = first.docs[0]['id'] + '|' + term_ref
         else
@@ -49,7 +53,7 @@ module BlacklightSolrplugins
     def xbrowse_next_link(facetwindow, doc_centric: false)
       last = facetwindow.items.last
       if last
-        term_ref = build_xbrowse_ref(last.term_metadata)
+        term_ref = build_xbrowse_ref(last.term_metadata, last.value)
         if doc_centric
           ref = last.docs[0]['id'] + '|' + term_ref
         else
