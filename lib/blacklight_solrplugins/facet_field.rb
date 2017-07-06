@@ -34,8 +34,9 @@ module BlacklightSolrplugins
       # flatten the nested structure for doc-centric facet items
       if is_doc_centric
         @items = items.map do |facet_item|
+          term_metadata = facet_item.term_metadata
           facet_item.docs.map do |doc|
-            BlacklightSolrplugins::FacetItem.new(value: facet_item.value, payload: { 'count' => 1, 'docs' => [ doc ] })
+            BlacklightSolrplugins::FacetItem.new(value: facet_item.value, payload: { 'count' => 1, 'termMetadata' => term_metadata, 'docs' => [ doc ] })
           end
         end.flatten
       end
