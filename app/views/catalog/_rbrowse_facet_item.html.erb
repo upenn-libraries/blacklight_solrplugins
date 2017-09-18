@@ -1,6 +1,6 @@
 <%# 'facet' local var = facet configuration field object %>
 <% rbrowse_facet_item.docs.each do |doc| %>
-  <% doc_presenter = show_presenter(doc) %>
+  <% doc_presenter = index_presenter(doc) %>
   <li>
     <span class="facet-label">
       <%= render_rbrowse_result(facet, rbrowse_facet_item, doc_presenter) %>
