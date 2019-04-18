@@ -22,4 +22,8 @@
         <%= render :partial => 'rbrowse_facet_item', :object => facet_item, :locals => { :facet => @facet } %>
     <% end %>
   </ul>
+
+  <div id="browsePaginateFooter" class="clearfix">
+    <%= render :partial => "browse_paginate", :object => @display_facet_window, :locals => { :doc_centric => true } %>
+  </div>
 </div>
